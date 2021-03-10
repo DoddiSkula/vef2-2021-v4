@@ -1,11 +1,7 @@
 export async function fetchEarthquakes(type, period) {
-  // TODO sækja gögn frá proxy þjónustu
   let result;
-  const API_URL = 'http://localhost:3001'; // harðkóðað - þarf ekki að setja á heroku
-  const url = new URL(`/proxy?period=${period}&type=${type}`, API_URL).href;
-
   try {
-    result = await fetch(url);
+    result = await fetch(`/proxy?period=${period}&type=${type}`);
   } catch (e) {
     console.error('Villa við að sækja', e);
     return null;

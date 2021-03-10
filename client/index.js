@@ -3,18 +3,17 @@ import { el, element, formatDate } from './lib/utils';
 import { init, createPopup } from './lib/map';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // TODO
-  // Bæta við virkni til að sækja úr lista
-  // Nota proxy
-  // Hreinsa header og upplýsingar þegar ný gögn eru sótt
-  // Sterkur leikur að refactora úr virkni fyrir event handler í sér fall
   const urlParams = new URLSearchParams(window.location.search);
   const type = urlParams.get('type');
   const period = urlParams.get('period');
+  const cacheInfo = document.querySelector('.cache');
 
   let earthquakes = [];
+  let result;
   if (type && period) {
-    earthquakes = await fetchEarthquakes(type, period);
+    result = await fetchEarthquakes(type, period);
+    earthquakes = result.data;
+    cacheInfo.textContent = result.info.cached ? `Gögn eru í cache. Fyrirspurn tók ${result.info.elapsed} sek.` : `Gögn eru ekki í cache. Fyrirspurn tók ${result.info.elapsed} sek.`;
   }
 
   // Fjarlægjum loading skilaboð eftir að við höfum sótt gögn
