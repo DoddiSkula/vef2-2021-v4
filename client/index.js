@@ -8,8 +8,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Nota proxy
   // Hreinsa header og upplýsingar þegar ný gögn eru sótt
   // Sterkur leikur að refactora úr virkni fyrir event handler í sér fall
+  const urlParams = new URLSearchParams(window.location.search);
+  const type = urlParams.get('type');
+  const period = urlParams.get('period');
 
-  const earthquakes = await fetchEarthquakes();
+  let earthquakes = [];
+  if (type && period) {
+    earthquakes = await fetchEarthquakes(type, period);
+  }
 
   // Fjarlægjum loading skilaboð eftir að við höfum sótt gögn
   const loading = document.querySelector('.loading');
